@@ -28,9 +28,9 @@ var postAceInit = function(hook, context){
       }
       return sval;
     },
-    newMsg: function(msg){ // Creates a new desktop notification
+    newMsg: function(authorName, author, text, sticky, timestamp, timestr){ // Creates a new desktop notification
       if(DesktopNotifications.status == true){
-        window.webkitNotifications.createNotification("", msg.authorName, msg.text).show();
+        window.webkitNotifications.createNotification("", authorName, text).show();
       }
     }	
   }
@@ -60,5 +60,5 @@ var postAceInit = function(hook, context){
 exports.postAceInit = postAceInit;
 
 exports.chatNewMessage = function(name, msg){
-  DesktopNotifications.newMsg(msg);  
+  DesktopNotifications.newMsg(authorName, author, text, sticky, timestamp, timestr);  
 }
