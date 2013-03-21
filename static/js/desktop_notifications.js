@@ -3,12 +3,14 @@ var postAceInit = function(hook, context){
   DesktopNotifications = {
     enable: function() { // enables the line DesktopNotifications functionality (this is the defualt behavior)
       $("#chaticon").click(function(){
-        if (window.webkitNotifications.checkPermission() == 0) { // 0 is PERMISSION_ALLOWED
-          // function defined in step 2
-          DesktopNotifications.status = true;
-          window.webkitNotifications.createNotification('', 'Notifications Enabled', 'Desktop notifications enabled, you can change your settings in the settings menu');
-        }else{
-          window.webkitNotifications.requestPermission();
+        if (window.webkitNotifications){
+          if (window.webkitNotifications.checkPermission() == 0) { // 0 is PERMISSION_ALLOWED
+            // function defined in step 2
+            DesktopNotifications.status = true;
+            window.webkitNotifications.createNotification('', 'Notifications Enabled', 'Desktop notifications enabled, you can change your settings in the settings menu');
+          }else{
+            window.webkitNotifications.requestPermission();
+          }
         }
       });
     },
