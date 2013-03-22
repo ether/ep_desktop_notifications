@@ -1,41 +1,41 @@
-var DesktopNotifications;
-var postAceInit = function(hook, context){
-  DesktopNotifications = {
-    enable: function() { // enables the line DesktopNotifications functionality (this is the defualt behavior)
-      $("#chaticon").click(function(){
-        if (window.webkitNotifications){
-          if (window.webkitNotifications.checkPermission() == 0) { // 0 is PERMISSION_ALLOWED
-            // function defined in step 2
-            DesktopNotifications.status = true;
-            window.webkitNotifications.createNotification('', 'Notifications Enabled', 'Desktop notifications enabled, you can change your settings in the settings menu');
-          }else{
-            window.webkitNotifications.requestPermission();
-          }
+var DesktopNotifications = {
+  enable: function() { // enables the line DesktopNotifications functionality (this is the defualt behavior)
+    $("#chaticon").click(function(){
+      if (window.webkitNotifications){
+        if (window.webkitNotifications.checkPermission() == 0) { // 0 is PERMISSION_ALLOWED
+          // function defined in step 2
+          DesktopNotifications.status = true;
+          window.webkitNotifications.createNotification('', 'Notifications Enabled', 'Desktop notifications enabled, you can change your settings in the settings menu');
+        }else{
+          window.webkitNotifications.requestPermission();
         }
-      });
-    },
-    disable: function() { // disable the line DesktopNotifications functionality
-      DesktopNotifications.status = false;
-    },
-    getParam: function(sname)
+      }
+    });
+  },
+  disable: function() { // disable the line DesktopNotifications functionality
+    DesktopNotifications.status = false;
+  },
+  getParam: function(sname)
+  {
+    var params = location.search.substr(location.search.indexOf("?")+1);
+    var sval = "";
+    params = params.split("&");
+    // split param and value into individual pieces
+    for (var i=0; i<params.length; i++)
     {
-      var params = location.search.substr(location.search.indexOf("?")+1);
-      var sval = "";
-      params = params.split("&");
-      // split param and value into individual pieces
-      for (var i=0; i<params.length; i++)
-      {
-        temp = params[i].split("=");
-        if ( [temp[0]] == sname ) { sval = temp[1]; }
-      }
-      return sval;
-    },
-    newMsg: function(authorName, author, text, sticky, timestamp, timestr){ // Creates a new desktop notification
-      if(DesktopNotifications.status == true){
-        window.webkitNotifications.createNotification("", authorName, text).show();
-      }
-    }	
-  }
+      temp = params[i].split("=");
+      if ( [temp[0]] == sname ) { sval = temp[1]; }
+    }
+    return sval;
+  },
+  newMsg: function(authorName, author, text, sticky, timestamp, timestr){ // Creates a new desktop notification
+    if(DesktopNotifications.status == true){
+      window.webkitNotifications.createNotification("", authorName, text).show();
+    }
+  }	
+}
+
+var postAceInit = function(hook, context){
   /* init */
   if($('#options-desktopNotifications').is(':checked')) {
     DesktopNotifications.enable();
@@ -61,6 +61,8 @@ var postAceInit = function(hook, context){
 };
 exports.postAceInit = postAceInit;
 
-exports.chatNewMessage = function(name, msg){
-  DesktopNotifications.newMsg(authorName, author, text, sticky, timestamp, timestr);  
+exports.chatNewMessage = function(e, obj, cb){
+  obj.authorName = obj.authorName || "SYSTEM MESSAGE:";
+  DesktopNotifications.newMsg(obj.authorName, obj.author, obj.text, obj.sticky, obj.timestamp, obj.timeStr);  
+  cb([null]);
 }
