@@ -1,13 +1,23 @@
 var DesktopNotifications = {
   enable: function() { // enables the line DesktopNotifications functionality (this is the defualt behavior)
     $("#chaticon").click(function(){
-      if (window.webkitNotifications){
-        if (window.webkitNotifications.checkPermission() == 0) { // 0 is PERMISSION_ALLOWED
-          // function defined in step 2
-          DesktopNotifications.status = true;
-          window.webkitNotifications.createNotification('', 'Notifications Enabled', 'Desktop notifications enabled, you can change your settings in the settings menu');
-        }else{
-          window.webkitNotifications.requestPermission();
+      if (DesktopNotifications.status == false) {
+        if (window.webkitNotifications){
+          if (window.webkitNotifications.checkPermission() == 0) { // 0 is PERMISSION_ALLOWED
+            // function defined in step 2
+            DesktopNotifications.status = true;
+            DesktopNotifications.newMsg('Notifications Enabled', '', 'Desktop notifications enabled, you can change your settings in the settings menu');
+          }else{
+            window.webkitNotifications.requestPermission();
+          }
+        // check for firefox notification support
+        } else if (window.Notification) {
+          Notification.requestPermission(function(permission){
+            if(permission == 'granted'){
+              DesktopNotifications.status = true;
+              DesktopNotifications.newMsg('Notifications Enabled', '', 'Desktop notifications enabled, you can change your settings in the settings menu');
+            }
+          });
         }
       }
     });
@@ -30,7 +40,11 @@ var DesktopNotifications = {
   },
   newMsg: function(authorName, author, text, sticky, timestamp, timestr){ // Creates a new desktop notification
     if(DesktopNotifications.status == true){
-      window.webkitNotifications.createNotification("", authorName, text).show();
+      if (window.webkitNotifications) {
+        window.webkitNotifications.createNotification("", authorName, text).show();
+      } else if (window.Notification) {
+        new Notification(authorName, { icon: null, body: text });
+      }
     }
   }	
 }
