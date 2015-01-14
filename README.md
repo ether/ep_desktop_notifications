@@ -1,5 +1,5 @@
 # Desktop Chat Notifications
-(Screenshot)[http://i.imgur.com/6K3hFzm.png]
+![Screenshot](http://i.imgur.com/6K3hFzm.png)
 
 Get notifications on your desktop when someone sends a chat message to your pad.  
 
