@@ -7,8 +7,3 @@ exports.eejsBlock_mySettings = function (hook_name, args, cb) {
   args.content = args.content + eejs.require('ep_desktop_notifications/templates/desktop_notifications_entry.ejs', {checked : checked_state});
   return cb();
 }
-
-exports.eejsBlock_styles = function (hook_name, args, cb)
-{
-  args.content = args.content + '<link href="../static/plugins/ep_desktop_notifications/static/css/desktop_notifications.css" rel="stylesheet">';
-} 
