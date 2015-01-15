@@ -29,7 +29,7 @@ var DesktopNotifications = {
     return sval;
   },
   newMsg: function(authorName, author, text, sticky, timestamp, timestr){ // Creates a new desktop notification
-    if(DesktopNotifications.status == true && pad.getUserId() != author){
+    if(DesktopNotifications.status == true){
       if (window.webkitNotifications) {
         window.webkitNotifications.createNotification("", authorName, text).show();
       } else if (window.Notification) {
