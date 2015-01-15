@@ -50,6 +50,8 @@ var DesktopNotifications = {
 }
 
 var postAceInit = function(hook, context){
+  /* initialize status to allow initial enable */
+  DesktopNotifications.status = false;
   /* init */
   if($('#options-desktopNotifications').is(':checked')) {
     DesktopNotifications.enable();
