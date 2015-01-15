@@ -1,7 +1,5 @@
 var DesktopNotifications = {
   enable: function() { // enables the line DesktopNotifications functionality (this is the defualt behavior)
-    $("#chaticon").click(function(){
-      if (DesktopNotifications.status == false) {
         if (window.webkitNotifications){
           if (window.webkitNotifications.checkPermission() == 0) { // 0 is PERMISSION_ALLOWED
             // function defined in step 2
@@ -19,10 +17,11 @@ var DesktopNotifications = {
             }
           });
         }
-      }
-    });
   },
   disable: function() { // disable the line DesktopNotifications functionality
+    if (DesktopNotifications.status == true) {
+      DesktopNotifications.newMsg('Notifications Disabled', '', 'Desktop notifications disabled');
+    }
     DesktopNotifications.status = false;
   },
   getParam: function(sname)
@@ -50,7 +49,7 @@ var DesktopNotifications = {
 }
 
 var postAceInit = function(hook, context){
-  /* initialize status to allow initial enable */
+  /* initialize status */
   DesktopNotifications.status = false;
   /* init */
   if($('#options-desktopNotifications').is(':checked')) {
