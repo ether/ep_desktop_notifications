@@ -1,4 +1,5 @@
-# ep_desktop_notifications
+# Desktop Chat Notifications
+![Screenshot](http://i.imgur.com/6K3hFzm.png)
 
 Get notifications on your desktop when someone sends a chat message to your pad.
 No matter, if you are on another browser tab or if you've minimized your browser.
@@ -39,6 +40,9 @@ project teams and deserves a much bigger user base.
 The plugin ep_desktop_notifications (in combination
 with e.g. ep_real_time_chat, ep_headings and ep_markdown)
 is an important step towards world dominance. ;-)
+
+# License
+Apache 2
 
 
 [compatibility table]: https://developer.mozilla.org/en-US/docs/Web/API/notification#Browser_compatibility

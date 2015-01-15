@@ -1,22 +1,13 @@
 var DesktopNotifications = {
   enable: function() { // enables the line DesktopNotifications functionality (this is the defualt behavior)
-        if (window.webkitNotifications){
-          if (window.webkitNotifications.checkPermission() == 0) { // 0 is PERMISSION_ALLOWED
-            // function defined in step 2
-            DesktopNotifications.status = true;
-            DesktopNotifications.newMsg('Notifications Enabled', '', 'Desktop notifications enabled, you can change your settings in the settings menu');
-          }else{
-            window.webkitNotifications.requestPermission();
-          }
-        // check for firefox notification support
-        } else if (window.Notification) {
-          Notification.requestPermission(function(permission){
-            if(permission == 'granted'){
-              DesktopNotifications.status = true;
-              DesktopNotifications.newMsg('Notifications Enabled', '', 'Desktop notifications enabled, you can change your settings in the settings menu');
-            }
-          });
+    if (window.Notification) {
+      Notification.requestPermission(function(permission){
+        if(permission == 'granted'){
+          DesktopNotifications.status = true;
+          DesktopNotifications.newMsg('Notifications Enabled', '', 'Desktop notifications enabled, you can change your settings in the settings menu');
         }
+      });
+    };
   },
   disable: function() { // disable the line DesktopNotifications functionality
     if (DesktopNotifications.status == true) {
@@ -42,6 +33,8 @@ var DesktopNotifications = {
       if (window.webkitNotifications) {
         window.webkitNotifications.createNotification("", authorName, text).show();
       } else if (window.Notification) {
+        // I shouldn't show them from me..
+        if(author === clientVars.userId) return; // dont show my own!
         new Notification(authorName, { icon: null, body: text });
       }
     }
