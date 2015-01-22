@@ -3,8 +3,10 @@ var DesktopNotifications = {
     if (window.Notification) {
       Notification.requestPermission(function(permission){
         if(permission == 'granted'){
+          if(DesktopNotifications.status != true) {
+            DesktopNotifications.newMsg('Notifications Enabled', '', 'Desktop notifications enabled, you can change your settings in the settings menu');
+          }
           DesktopNotifications.status = true;
-          DesktopNotifications.newMsg('Notifications Enabled', '', 'Desktop notifications enabled, you can change your settings in the settings menu');
         }
       });
     };
