@@ -1,14 +1,20 @@
 var DesktopNotifications = {
-  enable: function() { // enables the line DesktopNotifications functionality (this is the defualt behavior)
+  enable: function(force) { // enables the line DesktopNotifications functionality (this is the defualt behavior)
     if (window.Notification) {
-      Notification.requestPermission(function(permission){
-        if(permission == 'granted'){
-          if(DesktopNotifications.status != true) {
-            DesktopNotifications.newMsg('Notifications Enabled', '', 'Desktop notifications enabled, you can change your settings in the settings menu');
+      if (force || Notification.permission == "default") {
+        Notification.requestPermission(function(permission){
+          if(permission == 'granted'){
+            if(DesktopNotifications.status != true) {
+              DesktopNotifications.newMsg('Notifications Enabled', '', 'Desktop notifications enabled, you can change your settings in the settings menu');
+            }
+            DesktopNotifications.status = true;
+          } else {
+            DesktopNotifications.status = false;
           }
-          DesktopNotifications.status = true;
-        }
-      });
+        });
+      } else if (Notification.permission == "granted") {
+        DesktopNotifications.status = true;
+      }
     };
   },
   disable: function() { // disable the line DesktopNotifications functionality
@@ -48,14 +54,14 @@ var postAceInit = function(hook, context){
   DesktopNotifications.status = false;
   /* init */
   if($('#options-desktopNotifications').is(':checked')) {
-    DesktopNotifications.enable();
+    DesktopNotifications.enable(false);
   } else {
     DesktopNotifications.disable();
   }
   var urlContainsDesktopNotificationsTrue = (DesktopNotifications.getParam("DesktopNotifications") == "true"); // if the url param is set
   if(urlContainsDesktopNotificationsTrue){
     $('#options-desktopNotifications').attr('checked','checked');
-    DesktopNotifications.enable();
+    DesktopNotifications.enable(false);
   }else if (DesktopNotifications.getParam("DesktopNotifications") == "false"){
     $('#options-desktopNotifications').attr('checked',false);
     DesktopNotifications.disable();
@@ -63,7 +69,7 @@ var postAceInit = function(hook, context){
   /* on click */
   $('#options-desktopNotifications').on('click', function() {
     if($('#options-desktopNotifications').is(':checked')) {
-      DesktopNotifications.enable(); // enables Desktop Notifications
+      DesktopNotifications.enable(true); // enables Desktop Notifications
     } else {
       DesktopNotifications.disable(); // disables Desktop Notifications
     }
