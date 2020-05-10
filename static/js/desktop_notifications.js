@@ -4,9 +4,6 @@ var DesktopNotifications = {
       if (force || Notification.permission == "default") {
         Notification.requestPermission(function(permission){
           if(permission == 'granted'){
-            if(DesktopNotifications.status != true) {
-              DesktopNotifications.newMsg('Notifications Enabled', '', 'Desktop notifications enabled, you can change your settings in the settings menu');
-            }
             DesktopNotifications.status = true;
           } else {
             DesktopNotifications.status = false;
@@ -18,9 +15,6 @@ var DesktopNotifications = {
     };
   },
   disable: function() { // disable the line DesktopNotifications functionality
-    if (DesktopNotifications.status == true) {
-      DesktopNotifications.newMsg('Notifications Disabled', '', 'Desktop notifications disabled');
-    }
     DesktopNotifications.status = false;
   },
   getParam: function(sname)
@@ -38,20 +32,33 @@ var DesktopNotifications = {
   },
   newMsg: function(authorName, author, text, sticky, timestamp, timestr){ // Creates a new desktop notification
     if(DesktopNotifications.status == true){
-      if (window.webkitNotifications) {
-        window.webkitNotifications.createNotification("", authorName, text).show();
-      } else if (window.Notification) {
-        // I shouldn't show them from me..
-        if(author === clientVars.userId) return; // dont show my own!
-        new Notification(authorName, { icon: null, body: text });
+      if (!DesktopNotifications.firstNotificationShown) {
+        DesktopNotifications.firstNotificationShown = true;
+        DesktopNotifications.newMsgInner(
+          'Notifications enabled', '',
+          'You can disable notifications in the settings menu'
+        );
       }
+      DesktopNotifications.newMsgInner(authorName, author, text, sticky, timestamp, timestr);
     }
-  }	
+  },
+  /* internal helper */
+  newMsgInner: function(authorName, author, text, sticky, timestamp, timestr) {
+    if (window.webkitNotifications) {
+      window.webkitNotifications.createNotification("", authorName, text).show();
+    } else if (window.Notification) {
+      // I shouldn't show them from me..
+      if(author === clientVars.userId) return; // dont show my own!
+      new Notification(authorName, { icon: null, body: text });
+    }
+  }
 }
 
+
 var postAceInit = function(hook, context){
-  /* initialize status */
+  /* initialize properties */
   DesktopNotifications.status = false;
+  DesktopNotifications.firstNotificationShown = false;
   /* init */
   if($('#options-desktopNotifications').is(':checked')) {
     DesktopNotifications.enable(false);
@@ -65,7 +72,7 @@ var postAceInit = function(hook, context){
   }else if (DesktopNotifications.getParam("DesktopNotifications") == "false"){
     $('#options-desktopNotifications').attr('checked',false);
     DesktopNotifications.disable();
-  } 
+  }
   /* on click */
   $('#options-desktopNotifications').on('click', function() {
     if($('#options-desktopNotifications').is(':checked')) {
@@ -79,6 +86,6 @@ exports.postAceInit = postAceInit;
 
 exports.chatNewMessage = function(e, obj, cb){
   obj.authorName = obj.authorName || "SYSTEM MESSAGE:";
-  DesktopNotifications.newMsg(obj.authorName, obj.author, obj.text, obj.sticky, obj.timestamp, obj.timeStr);  
+  DesktopNotifications.newMsg(obj.authorName, obj.author, obj.text, obj.sticky, obj.timestamp, obj.timeStr);
   cb([null]);
 }
