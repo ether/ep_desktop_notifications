@@ -1,0 +1,8 @@
+@keyframes notification-permission-button {
+  0% { color: inherit; }
+  100% { color: #FFBF00; }
+}
+#notification-permission-button {
+  color: #FFBF00;
+  animation: notification-permission-button 2s ease-out 0s infinite alternate;
+}
