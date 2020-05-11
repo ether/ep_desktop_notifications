@@ -1,5 +1,5 @@
 # Desktop Chat Notifications
-![Screenshot](http://i.imgur.com/6K3hFzm.png)
+![Screenshot](https://user-images.githubusercontent.com/64109265/81602939-c7547080-93cd-11ea-84a1-a06fde79926f.png)
 
 Get notifications on your desktop when someone sends a chat message to your pad.
 No matter, if you are on another browser tab or if you've minimized your browser.
