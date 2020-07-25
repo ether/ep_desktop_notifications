@@ -1,6 +1,6 @@
 {
   "name": "ep_desktop_notifications",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": [
     "desktop",
     "notifications",
@@ -19,8 +19,7 @@
     "type": "git",
     "url": "git://github.com/johnmclear/ep_desktop_notifications.git"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "engines": {
     "node": "*"
   }
