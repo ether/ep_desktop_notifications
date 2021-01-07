@@ -71,7 +71,7 @@ var DesktopNotifications = {
         DesktopNotifications.createNotification(
             'Notifications enabled',
             'You can disable notifications in the settings menu',
-            'en',
+            'en'
         );
       }
       DesktopNotifications.handleNotificationPermission(result);
@@ -115,7 +115,7 @@ var postAceInit = function (hook, context) {
   }
   if ($optionsDesktopNotifications.is(':checked')) {
     DesktopNotifications.handleNotificationPermission(
-        DesktopNotifications.notificationPermission(),
+        DesktopNotifications.notificationPermission()
     );
   } else {
     DesktopNotifications.disable();
