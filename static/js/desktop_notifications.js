@@ -1,9 +1,10 @@
-var DesktopNotifications = {
+'use strict';
+/* global webkitNotifications */
+
+const DesktopNotifications = {
   /* compatilibility layer */
-  notificationSupported() {
-    return !!window.Notification || !!window.webkitNotifications;
-  },
-  notificationPermission() {
+  notificationSupported: () => !!window.Notification || !!window.webkitNotifications,
+  notificationPermission: () => {
     if (window.Notification) {
       return Notification.permission;
     } else if (window.webkitNotifications) {
@@ -12,7 +13,7 @@ var DesktopNotifications = {
       return 'denied';
     }
   },
-  requestNotificationPermission(cb) {
+  requestNotificationPermission: (cb) => {
     if (window.Notification) {
       return Notification.requestPermission().then(cb);
     } else if (window.webkitNotifications) {
@@ -21,7 +22,7 @@ var DesktopNotifications = {
       });
     } // else just chill
   },
-  createNotification(authorName, text, lang) {
+  createNotification: (authorName, text, lang) => {
     if (window.Notification) {
       new Notification(authorName, {body: text, lang});
     } else if (window.webkitNotifications) {
@@ -31,13 +32,14 @@ var DesktopNotifications = {
     }
   },
 
-  allowNotificationsToolbarEntryEnabled(status) {
+  allowNotificationsToolbarEntryEnabled: (status) => {
     status = !!status;
     const previousEntry = $('#allowNotificationsToolbarEntry');
     const previousStatus = previousEntry.length > 0;
     if (status === previousStatus) {
       return;
     }
+    let allowNotificationsToolbarEntry;
     if (status) {
       allowNotificationsToolbarEntry = $('<li>').attr({
         'id': 'allowNotificationsToolbarEntry',
@@ -60,11 +62,11 @@ var DesktopNotifications = {
       previousEntry.remove();
     }
   },
-  handleNotificationPermission(state) {
+  handleNotificationPermission: (state) => {
     DesktopNotifications.status = state === 'granted';
     DesktopNotifications.allowNotificationsToolbarEntryEnabled(state === 'default');
   },
-  enable() { // enables notifications
+  enable: () => { // enables notifications
     DesktopNotifications.requestNotificationPermission((result) => {
       if (!DesktopNotifications.helpShown && result === 'granted') {
         DesktopNotifications.helpShown = true;
@@ -77,21 +79,22 @@ var DesktopNotifications = {
       DesktopNotifications.handleNotificationPermission(result);
     });
   },
-  disable() { // disables notifications
+  disable: () => { // disables notifications
     DesktopNotifications.handleNotificationPermission('denied');
   },
-  getParam(sname) {
+  getParam: (sname) => {
     let params = location.search.substr(location.search.indexOf('?') + 1);
     let sval = '';
     params = params.split('&');
     // split param and value into individual pieces
     for (let i = 0; i < params.length; i++) {
-      temp = params[i].split('=');
-      if ([temp[0]] == sname) { sval = temp[1]; }
+      const temp = params[i].split('=');
+      if ([temp[0]] === sname) { sval = temp[1]; }
     }
     return sval;
   },
-  newMsg(authorName, author, text, sticky, timestamp, timeStr) { // Creates a new desktop notification
+  newMsg: (authorName, author, text, sticky, timestamp, timeStr) => {
+    // Creates a new desktop notification
     if (DesktopNotifications.status) {
       if (author === clientVars.userId) return; // dont show my own!
       DesktopNotifications.createNotification(authorName, text);
@@ -100,7 +103,7 @@ var DesktopNotifications = {
 };
 
 
-var postAceInit = function (hook, context) {
+const postAceInit = (hook, context) => {
   /* initialize properties */
   DesktopNotifications.status = false;
   DesktopNotifications.helpShown = false;
@@ -133,8 +136,9 @@ var postAceInit = function (hook, context) {
 
 exports.postAceInit = postAceInit;
 
-exports.chatNewMessage = function (e, obj, cb) {
+exports.chatNewMessage = (e, obj, cb) => {
   obj.authorName = obj.authorName || 'SYSTEM MESSAGE:';
-  DesktopNotifications.newMsg(obj.authorName, obj.author, obj.text, obj.sticky, obj.timestamp, obj.timeStr);
+  DesktopNotifications.newMsg(
+      obj.authorName, obj.author, obj.text, obj.sticky, obj.timestamp, obj.timeStr);
   cb([null]);
 };

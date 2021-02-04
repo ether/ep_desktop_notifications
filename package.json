@@ -21,7 +21,7 @@
   },
   "dependencies": {},
   "engines": {
-    "node": "*"
+    "node": ">=10.17.0"
   },
   "funding": {
     "type": "individual",
