@@ -1,3 +1,8 @@
 {
-	"ep_desktop_notifications.desktopNotifications": "Notificacions a l'escriptori"
+	"@metadata": {
+		"authors": [
+			"Alan Mena"
+		]
+	},
+	"ep_desktop_notifications.desktopNotifications": "Notificacions d'escriptori"
 }

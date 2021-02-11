@@ -1,3 +1,8 @@
 {
-	"ep_desktop_notifications.desktopNotifications": "Notificações da Área de Trabalho"
+	"@metadata": {
+		"authors": [
+			"Eduardoaddad"
+		]
+	},
+	"ep_desktop_notifications.desktopNotifications": "Notificações da área de trabalho"
 }
