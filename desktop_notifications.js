@@ -10,7 +10,7 @@ exports.eejsBlock_mySettings = (hookName, args, cb) => {
     eejs.require('ep_desktop_notifications/templates/desktop_notifications_entry.ejs',
         {
           checked: checkedState,
-        }
+        },
     );
   return cb();
 };
