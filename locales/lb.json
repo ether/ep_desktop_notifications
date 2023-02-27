@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Volvox"
+		]
 	},
-	"ep_desktop_notifications.desktopNotifications": "Desktop Matdeelungen"
+	"ep_desktop_notifications.desktopNotifications": "Desktop-Notifikatiounen"
 }
