@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Hakimi97"
+		]
 	},
-	"ep_desktop_notifications.desktopNotifications": "Pemberitahuan desktop"
+	"ep_desktop_notifications.desktopNotifications": "Pemberitahuan atas meja"
 }
