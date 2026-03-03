@@ -1,4 +1,5 @@
-![Publish Status](https://github.com/ether/ep_desktop_notifications/workflows/Node.js%20Package/badge.svg) ![Backend Tests Status](https://github.com/ether/ep_desktop_notifications/workflows/Backend%20tests/badge.svg)
+[![Publish Status](https://github.com/ether/ep_desktop_notifications/workflows/Node.js%20Package/badge.svg)](https://github.com/ether/ep_desktop_notifications/actions/workflows/test-and-release.yml) 
+[![Backend Tests Status](https://github.com/ether/ep_desktop_notifications/workflows/Backend%20tests/badge.svg)](https://github.com/ether/ep_desktop_notifications/actions/workflows/backend-tests.yml)
 
 # Desktop Chat Notifications
 ![Screenshot](https://user-images.githubusercontent.com/64109265/81602939-c7547080-93cd-11ea-84a1-a06fde79926f.png)
