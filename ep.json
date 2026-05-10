@@ -2,12 +2,17 @@
   "parts": [
     {
       "name": "ep_desktop_notifications",
+      "hooks": {
+        "loadSettings": "ep_desktop_notifications/desktop_notifications",
+        "clientVars": "ep_desktop_notifications/desktop_notifications",
+        "eejsBlock_mySettings": "ep_desktop_notifications/desktop_notifications",
+        "eejsBlock_padSettings": "ep_desktop_notifications/desktop_notifications",
+        "eejsBlock_styles": "ep_desktop_notifications/desktop_notifications"
+      },
       "client_hooks": {
         "postAceInit": "ep_desktop_notifications/static/js/desktop_notifications:postAceInit",
-        "chatNewMessage": "ep_desktop_notifications/static/js/desktop_notifications:chatNewMessage"
-      },
-      "hooks": {
-        "eejsBlock_mySettings": "ep_desktop_notifications/desktop_notifications"
+        "chatNewMessage": "ep_desktop_notifications/static/js/desktop_notifications:chatNewMessage",
+        "handleClientMessage_CLIENT_MESSAGE": "ep_desktop_notifications/static/js/desktop_notifications:handleClientMessage_CLIENT_MESSAGE"
       }
     }
   ]
