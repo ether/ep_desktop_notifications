@@ -1,6 +1,25 @@
 'use strict';
 /* global webkitNotifications */
 
+// Sub-path import keeps the client bundle clean — the top-level
+// `ep_plugin_helpers` index pulls in server-only modules.
+const {padToggle} = require('ep_plugin_helpers/pad-toggle');
+const padcookie = require('ep_etherpad-lite/static/js/pad_cookie').padcookie;
+
+// Same config as the server-side instance — must agree on pluginName,
+// settingId, l10nId, and defaultLabel so checkbox ids and clientVars line up.
+const desktopToggle = padToggle({
+  pluginName: 'ep_desktop_notifications',
+  settingId: 'desktopNotifications',
+  l10nId: 'ep_desktop_notifications.desktopNotifications',
+  defaultLabel: 'Desktop Notifications',
+  defaultEnabled: true,
+});
+
+// Re-export so the helper sees pad-wide broadcasts and refreshes our state
+// when another user toggles the pad-wide checkbox.
+exports.handleClientMessage_CLIENT_MESSAGE = desktopToggle.handleClientMessage_CLIENT_MESSAGE;
+
 const DesktopNotifications = {
   /* compatilibility layer */
   notificationSupported: () => !!window.Notification || !!window.webkitNotifications,
@@ -108,29 +127,24 @@ const postAceInit = (hook, context) => {
   DesktopNotifications.status = false;
   DesktopNotifications.helpShown = false;
 
-  /* init */
-  const $optionsDesktopNotifications = $('#options-desktopNotifications');
-  const urlDesktopNotifications = DesktopNotifications.getParam('DesktopNotifications');
-  if (urlDesktopNotifications === 'true') {
-    $optionsDesktopNotifications.attr('checked', 'checked');
-  } else if (urlDesktopNotifications === 'false') {
-    $optionsDesktopNotifications.attr('checked', false);
-  }
-  if ($optionsDesktopNotifications.is(':checked')) {
-    DesktopNotifications.handleNotificationPermission(
-        DesktopNotifications.notificationPermission()
-    );
-  } else {
-    DesktopNotifications.disable();
-  }
+  // The README documents `?DesktopNotifications=true|false` as a way to
+  // override the toggle. Now that the helper persists per-user state in
+  // padcookie, write the URL value into the cookie before init reads it
+  // — that way the override survives reload, matching the original intent.
+  const urlOverride = DesktopNotifications.getParam('DesktopNotifications');
+  if (urlOverride === 'true') padcookie.setPref('desktopNotifications', true);
+  else if (urlOverride === 'false') padcookie.setPref('desktopNotifications', false);
 
-  /* on click */
-  $optionsDesktopNotifications.click(() => {
-    if ($optionsDesktopNotifications.is(':checked')) {
-      DesktopNotifications.enable();
-    } else {
-      DesktopNotifications.disable();
-    }
+  desktopToggle.init({
+    onChange: (enabled) => {
+      if (enabled) {
+        DesktopNotifications.handleNotificationPermission(
+            DesktopNotifications.notificationPermission()
+        );
+      } else {
+        DesktopNotifications.disable();
+      }
+    },
   });
 };
 
