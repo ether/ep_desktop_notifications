@@ -108,7 +108,7 @@ const DesktopNotifications = {
     // split param and value into individual pieces
     for (let i = 0; i < params.length; i++) {
       const temp = params[i].split('=');
-      if ([temp[0]] === sname) { sval = temp[1]; }
+      if (temp[0] === sname) { sval = temp[1]; }
     }
     return sval;
   },
